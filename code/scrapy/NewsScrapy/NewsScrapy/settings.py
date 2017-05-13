@@ -64,9 +64,15 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'NewsScrapy.pipelines.NewsscrapyPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   #'NewsScrapy.pipelines.NewsscrapyPipeline': 300,
+    'NewsScrapy.pipelines.MysqlTwistedPipline': 1,
+}
+
+MYSQL_HOST = "127.0.0.1"
+MYSQL_DBNAME = "uews_db"
+MYSQL_USER = "root"
+MYSQL_PASSWORD = "1234"
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
