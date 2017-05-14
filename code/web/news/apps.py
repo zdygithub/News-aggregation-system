@@ -5,4 +5,4 @@ from django.apps import AppConfig
 
 
 class UewsConfig(AppConfig):
-    name = 'uews'
+    name = 'news'

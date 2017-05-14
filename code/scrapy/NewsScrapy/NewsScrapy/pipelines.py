@@ -46,7 +46,7 @@ class MysqlTwistedPipline(object):
         # 执行具体的插入
         # 根据不同的item 构建不同的sql语句并插入到mysql中
         insert_sql = """
-                    insert into uews_data(title, title_original, site_original, url_original, newstime, content, content_html)
+                    insert into news_data(title, title_original, site_original, url_original, newstime, content, content_html)
                     VALUES (%s, %s, %s, %s, %s, %s, %s)
                 """
         cursor.execute(insert_sql,(item["title"], item["title_original"],

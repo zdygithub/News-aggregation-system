@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('uews', '0001_initial'),
+        ('news', '0001_initial'),
     ]
 
     operations = [
