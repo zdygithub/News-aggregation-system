@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from uews.views import UewContent
+from news.views import NewsContent,NewsList
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$',UewContent)
+    url(r'^$', NewsList, name='news_list'),
+    url(r'^(?P<n_id>[0-9]+)/$', NewsContent, name='news_content')
 ]

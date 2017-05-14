@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div><h1>{{ news.title }}</h1></div>
+
+    <div>来源：{{ news.site_original }}</div>
+
+    <div>发布时间：{{ news.newstime }}</div>
+
+    <div>原文地址：{{ news.url_original }}</div>
+
+    <div>原文标题：{{ news.title_original }}</div>
+
+    <div>{{ news.content_html|safe }}</div>
+
+</body>
+</html>
