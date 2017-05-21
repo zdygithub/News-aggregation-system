@@ -3,10 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
 </head>
 <body>
-    {% for n in news %}
-        <div><a href="{% url 'news_content' n.id %}">{{ n.title }}</a></div>
-    {% endfor %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-10">
+                <div id="header" class="row" style="margin-top: 20px;">
+                    <div id="logo" class="col-lg-4" style="padding-top: 10px;">
+                        <h3><a href="http://127.0.0.1:8000/">新闻聚合系统</a></h3>
+                    </div>
+                    <div class="col-lg-8" >
+                        <ul class="nav nav-pills" style="float: right;">
+                            <li><a href="http://127.0.0.1:8000/">财经</a></li>
+                            <li><a href="http://127.0.0.1:8000/">体育</a></li>
+                            <li><a href="http://127.0.0.1:8000/">军事</a></li>
+                            <li><a href="http://127.0.0.1:8000/">政治</a></li>
+                            <li><a href="http://127.0.0.1:8000/">国际</a></li>
+                            <li><a href="http://127.0.0.1:8000/">经济</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-lg-8">
+                        {% for n in news %}
+                         <div class="row">
+                             <div class="col-lg-3">
+                                <a href="{% url 'news_content' n.id %}" target="_blank">
+                                    <img style="margin: 16px 0;" width="160" height="130" src="{{ n.front_image_url }}"/>
+                                </a>
+                             </div>
+                             <div class="col-lg-9">
+                                 <h4><a style="color:#0f0f0f; font-weight: 600" href="{% url 'news_content' n.id %}" target="_blank">{{ n.title }}</a></h4>
+                                 <p>{{ n.content }} ...</p>
+                             </div>
+                         </div>
+                         <hr/>
+                        {% endfor %}
+                    </div>
+                    <div class="col-lg-4">
+                        <div>
+                            <a><img width="345" height="142" src="http://i.guancha.cn/news/2017/05/20/20170520155516251.jpg" /></a>
+                            <h4>1500万!为何对这位"最牛开发商"之父的罚款创纪录 </h4>
+                        </div>
+                        <div>
+                            <a><img width="345" height="142" src="http://i.guancha.cn/news/2017/05/20/20170520155516251.jpg" /></a>
+                            <h4>有人干这事年赚200万有人干这事年赚200万 </h4>
+                        </div>
+                        <div>
+                            <a><img width="345" height="142" src="http://i.guancha.cn/news/2017/05/20/20170520155516251.jpg" /></a>
+                            <h4>有人干这事年赚200万有人干这事年赚200万 </h4>
+                        </div>
+                        <div>
+                            <a><img width="345" height="142" src="http://i.guancha.cn/news/2017/05/19/20170519161326653.jpg" /></a>
+                            <h4>有人干这事年赚200万 </h4>
+                        </div>
+                        <div>
+                            <a><img width="345" height="142" src="http://i.guancha.cn/news/2017/05/19/20170519141158637.jpg" /></a>
+                            <h4>有人干这事年赚200万 </h4>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-1">
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

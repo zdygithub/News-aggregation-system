@@ -7,7 +7,7 @@ from .models import NewsData
 
 # Create your views here.
 def NewsList(request):
-    news = NewsData.objects.all()
+    news = NewsData.objects.all().order_by('-id')  # 按id降序排列
     return render(request, 'news_list.html', {'news':news})
 
 

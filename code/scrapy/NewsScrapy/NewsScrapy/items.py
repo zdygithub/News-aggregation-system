@@ -11,8 +11,12 @@ import scrapy
 class NewsscrapyItem(scrapy.Item):
     title = scrapy.Field()
     title_original = scrapy.Field()
-    url_original = scrapy.Field()
     site_original = scrapy.Field()
+    url_original = scrapy.Field()
     newstime = scrapy.Field()
     content = scrapy.Field()
     content_html = scrapy.Field()
+    front_image_url = scrapy.Field()
+    click = scrapy.Field()
+    similar = scrapy.Field()
+    keyword = scrapy.Field()

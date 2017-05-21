@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for web project.
 
@@ -78,7 +79,7 @@ WSGI_APPLICATION = 'web.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'uews_db',
+        'NAME': 'news_db',
         'USER':'root',
         'PASSWORD':'1234',
         'HOST':'127.0.0.1',
@@ -123,3 +124,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'collectstatic')
+
+# 配置static的路径
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]

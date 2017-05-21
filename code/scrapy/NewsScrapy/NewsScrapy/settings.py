@@ -66,11 +66,12 @@ ROBOTSTXT_OBEY = True
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    #'NewsScrapy.pipelines.NewsscrapyPipeline': 300,
-    'NewsScrapy.pipelines.MysqlTwistedPipline': 1,
+    'NewsScrapy.pipelines.NewsSimilarPipeline': 1,
+    'NewsScrapy.pipelines.MysqlTwistedPipline': 2,
 }
 
 MYSQL_HOST = "127.0.0.1"
-MYSQL_DBNAME = "uews_db"
+MYSQL_DBNAME = "news_db"
 MYSQL_USER = "root"
 MYSQL_PASSWORD = "1234"
 

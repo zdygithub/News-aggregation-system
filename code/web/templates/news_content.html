@@ -3,19 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
 </head>
 <body>
-    <div><h1>{{ news.title }}</h1></div>
 
-    <div>来源：{{ news.site_original }}</div>
+<div class="container-fluid">
 
-    <div>发布时间：{{ news.newstime }}</div>
+    <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+            <div><h1>{{ news.title }}</h1></div>
 
-    <div>原文地址：{{ news.url_original }}</div>
+            <div>
+                <div>来源：{{ news.site_original }}</div>
 
-    <div>原文标题：{{ news.title_original }}</div>
+                <div>发布时间：{{ news.newstime }}</div>
 
-    <div>{{ news.content_html|safe }}</div>
+                <div>原文地址：{{ news.url_original }}</div>
 
+                <div>原文标题：{{ news.title_original }}</div>
+            </div>
+
+            <div style="font-size: 16px">
+                <div>{{ news.content_html|safe }}</div>
+            </div>
+
+        </div>
+        <div class="col-lg-3"></div>
+    </div>
+</div>
 </body>
 </html>
