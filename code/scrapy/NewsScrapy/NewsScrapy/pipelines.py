@@ -28,34 +28,48 @@ class NewsSimilarPipeline(object):
         conn.commit()
         conn.close()
         sys.stdout.write('文本相似度匹配中：' + '->' + "\b\b")
-        for content in contents:
-            article_a = content[0]
-            article_b = item['content_html']
-            # 分词
-            res1 = self.cut_word(article=article_a)
-            res2 = self.cut_word(article=article_b)
 
-            # 计算出词频向量
-            vectors = self.tf_idf(res1, res2)
-            # 相似度
-            similarity = self.run(vector1=vectors[0], vector2=vectors[1])
-            sys.stdout.write('█' + '->' + "\b\b") # 进度条
-            sys.stdout.flush()
+        article_b = item['content_html']
+        # 分词
+        res2 = self.cut_word(article=article_b)
+        keyword = '' # 为item 添加关键字
 
+        if contents:
+            for content in contents:
+                article_a = content[0]
+                # 分词
+                res1 = self.cut_word(article=article_a)
+                # 计算出词频向量
+                vectors = self.tf_idf(res1, res2)
+                # 相似度
+                similarity = self.run(vector1=vectors[0], vector2=vectors[1])
+
+                sys.stdout.write('█' + '->' + "\b\b") # 进度条
+                sys.stdout.flush()
+                # 判别相似程度
+                if similarity < 0.8:
+                    if similarity > 0.75: # 相似新闻
+                        item['similar'] = 1 # 重复标志（有相似）
+                        print('\n匹配到相似新闻-->'+item['title']+'\n相似新闻-->'+content[1]+'# 相似度'+str(similarity))
+                        item['title'] = content[1]
+                    else:
+                        item['similar'] = 3  # 重复标志（无相似）
+                else:
+                    item['similar'] = 2 # 重复标志（完全相同）
+                    return item
+
+                # 为item 添加关键字
+                for i in res2:
+                    key = i[0]
+                    keyword = keyword + ',' + key
+                item['keyword'] = keyword
+        else:
+            item['similar'] = 0  # 重复标志
             # 为item 添加关键字
-            if item['keyword'] == '0':
-                for i in range(3):
-                    keyword = res1[i][0]
-                    item['keyword'] = item['keyword'] + keyword + ','
-
-            # 相似度
-            if similarity < 0.9:
-                if similarity > 0.75: # 相似新闻
-                    item['similar'] = 1
-                    print('\n匹配到相似新闻-->'+item['title']+'\n相似新闻-->'+content[1])
-                    item['title'] = content[1]
-            else:
-                item['similar'] = 2 # 重复标志
+            for i in res2:
+                key = i[0]
+                keyword = keyword + ',' + key
+            item['keyword'] = keyword
 
         return item
 
@@ -136,10 +150,11 @@ class MysqlTwistedPipline(object):
         # 根据不同的item 构建不同的sql语句并插入到mysql中
         insert_sql = """
                     insert ignore into news_data(title, title_original, site_original, url_original,
-                                                newstime, content, content_html,front_image_url)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                                                newstime, content, content_html,front_image_url,
+                                                keyword,click,similar)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """
         cursor.execute(insert_sql,(item["title"], item["title_original"],
                                    item["site_original"], item["url_original"],
                                    item["newstime"], item["content"], item["content_html"],
-                                   item['front_image_url'],))
+                                   item['front_image_url'],item['keyword'],item['click'],item['similar'],))

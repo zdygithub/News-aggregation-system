@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>News List</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script type="text/javascript" src="/static/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 </head>
 <body>
     <div class="container-fluid">
@@ -14,10 +16,10 @@
             </div>
             <div class="col-md-10">
                 <div id="header" class="row" style="margin-top: 20px;">
-                    <div id="logo" class="col-lg-4" style="padding-top: 10px;">
+                    <div id="logo" class="col-md-4" style="padding-top: 10px;">
                         <h3><a href="http://127.0.0.1:8000/">新闻聚合系统</a></h3>
                     </div>
-                    <div class="col-lg-8" >
+                    <div class="col-md-8" >
                         <ul class="nav nav-pills" style="float: right;">
                             <li><a href="http://127.0.0.1:8000/">财经</a></li>
                             <li><a href="http://127.0.0.1:8000/">体育</a></li>
@@ -25,20 +27,23 @@
                             <li><a href="http://127.0.0.1:8000/">政治</a></li>
                             <li><a href="http://127.0.0.1:8000/">国际</a></li>
                             <li><a href="http://127.0.0.1:8000/">经济</a></li>
+                            <li><a href="http://127.0.0.1:8000/">{{ session }}</a></li>
+                            <li><a href="" data-toggle="modal" data-target="#myLogin">登录</a></li>
+                            <li><a href="{% url 'user_logout' %}">登出</a></li>
                         </ul>
                     </div>
                 </div>
                 <hr/>
                 <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-md-8">
                         {% for n in news %}
                          <div class="row">
-                             <div class="col-lg-3">
+                             <div class="col-md-3">
                                 <a href="{% url 'news_content' n.id %}" target="_blank">
                                     <img style="margin: 16px 0;" width="160" height="130" src="{{ n.front_image_url }}"/>
                                 </a>
                              </div>
-                             <div class="col-lg-9">
+                             <div class="col-md-9">
                                  <h4><a style="color:#0f0f0f; font-weight: 600" href="{% url 'news_content' n.id %}" target="_blank">{{ n.title }}</a></h4>
                                  <p>{{ n.content }} ...</p>
                              </div>
@@ -46,7 +51,7 @@
                          <hr/>
                         {% endfor %}
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-md-4">
                         <div>
                             <a><img width="345" height="142" src="http://i.guancha.cn/news/2017/05/20/20170520155516251.jpg" /></a>
                             <h4>1500万!为何对这位"最牛开发商"之父的罚款创纪录 </h4>
@@ -56,22 +61,55 @@
                             <h4>有人干这事年赚200万有人干这事年赚200万 </h4>
                         </div>
                         <div>
-                            <a><img width="345" height="142" src="http://i.guancha.cn/news/2017/05/20/20170520155516251.jpg" /></a>
-                            <h4>有人干这事年赚200万有人干这事年赚200万 </h4>
+                            <a><img width="345" height="142" src="http://i.guancha.cn/news/2017/05/20/20170520141847304.jpg" /></a>
+                            <h4>日官员：平野有两点无人能敌 唯有丁宁可以一战 </h4>
                         </div>
                         <div>
-                            <a><img width="345" height="142" src="http://i.guancha.cn/news/2017/05/19/20170519161326653.jpg" /></a>
-                            <h4>有人干这事年赚200万 </h4>
+                            <a><img width="345" height="142" src="http://i.guancha.cn/news/2017/05/19/20170519160236603.jpg" /></a>
+                            <h4>我可燃冰试采成功 观网读者却有些担忧 </h4>
                         </div>
                         <div>
-                            <a><img width="345" height="142" src="http://i.guancha.cn/news/2017/05/19/20170519141158637.jpg" /></a>
-                            <h4>有人干这事年赚200万 </h4>
+                            <a><img width="345" height="142" src="http://i.guancha.cn/news/2017/05/20/20170520153151212.jpg" /></a>
+                            <h4>要坐缆车上这儿演讲 特朗普：不去了 </h4>
                         </div>
                     </div>
 
                 </div>
             </div>
             <div class="col-md-1">
+            </div>
+        </div>
+    </div>
+
+    <!-- 登录模块 -->
+    <div class="modal fade bs-example-modal-sm" id="myLogin" role="dialog" aria-labelledby="myLoginLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width: 300px">
+            <div class="modal-content" >
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" style="text-align:center;" id="myLoginLabel">登录</h4>
+                </div>
+                <form method="post" action="{% url 'user_login' %}">
+                    {% csrf_token %}
+                    <div class="modal-body" style="padding:0 50px;">
+
+                        <div class="form-group">
+                            <label class="control-label">用户名</label>
+                            <input type="text" name="name" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">密码</label>
+                            <input type="password"  name="password" class="form-control" />
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary">登录</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

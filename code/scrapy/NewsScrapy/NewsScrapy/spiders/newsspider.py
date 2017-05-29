@@ -58,7 +58,9 @@ class NeteaseNewsSpider(scrapy.Spider):
         item['content_html'] = content_html
         item['front_image_url'] = front_image_url
         item['similar'] = 0
+        item['click'] = 0
         item['keyword'] = '0'
+
         yield item
 
 
@@ -112,17 +114,18 @@ class HiwainetNewsSpider(scrapy.Spider):
         item['content_html'] = content_html
         item['front_image_url'] = front_image_url
         item['similar'] = 0
+        item['click'] = 0
         item['keyword'] = '0'
 
         yield item
 
 
-# 爬取观察者网新闻
-class GuanchaNewsSpider(scrapy.Spider):
-    name = "guancha_uews"
-    allowed_domains = ["www.guancha.cn"]
-    start_urls = ['http://www.guancha.cn/politics/2017_05_21_409319.shtml']
-
-    # 爬取要闻连接
-    def parse(self, response):
-        selector = Selector(response)
+# # 爬取观察者网新闻
+# class GuanchaNewsSpider(scrapy.Spider):
+#     name = "guancha_uews"
+#     allowed_domains = ["www.guancha.cn"]
+#     start_urls = ['http://www.guancha.cn/politics/2017_05_21_409319.shtml']
+#
+#     # 爬取要闻连接
+#     def parse(self, response):
+#         selector = Selector(response)

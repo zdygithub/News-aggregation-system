@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from news.views import NewsContent,NewsList
+from news.views import NewsContent,NewsList,NserLogin,NserLogout
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', NewsList, name='news_list'),
-    url(r'^(?P<n_id>[0-9]+)/$', NewsContent, name='news_content')
+    url(r'^(?P<n_id>[0-9]+)/$', NewsContent, name='news_content'),
+    url(r'^userlogin$', NserLogin, name='user_login'),
+    url(r'^userlogout$', NserLogout, name='user_logout'),
 ]
