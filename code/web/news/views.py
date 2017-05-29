@@ -11,34 +11,36 @@ def NewsList(request):
     session = request.session.get('username',default=None)
     if session != None:
         user = models.UserInfo.objects.get(username=session)
-        news1 = models.NewsData.objects.all().order_by('-id')[:10]  # 从数据库中取出所有数据，并按id降序排列
+        news1 = models.NewsData.objects.all().order_by('-id')[:20]  # 从数据库中取出所有数据，并按id降序排列
+        
+        if user.keyword: # 保证用户的关键字不为空
+            rec_dict={}
+            # 对前10个新闻进行推荐匹配
+            for n in news1:
+                # 分词
+                res1 = cut_word(article=user.keyword)
+                res2 = cut_word(article=n.keyword)
+                # 计算出词频向量
+                vectors = tf_idf(res1, res2)
+                # 相似度
+                similarity = run(vector1=vectors[0], vector2=vectors[1])
 
-        rec_dict={}
-        # 对前10个新闻进行推荐匹配
-        for n in news1:
-            # 分词
-            res1 = cut_word(article=user.keyword)
-            res2 = cut_word(article=n.keyword)
-            # 计算出词频向量
-            vectors = tf_idf(res1, res2)
-            # 相似度
-            similarity = run(vector1=vectors[0], vector2=vectors[1])
+                # 相似度字典{"新闻id": 相似度}
+                rec_dict[n.id] = similarity
+            # 对字典 按value进行 倒序排序，返回列表[("新闻id"，相似度), (), ()]
+            rec_list = sorted(rec_dict.items(), key=lambda items:items[1], reverse=True)
 
-            # 相似度字典
-            rec_dict[n.id] = similarity
-        # 对字典 按value进行 倒序排序，返回列表[(),(),()]
-        rec_list = sorted(rec_dict.items(), key=lambda items:items[1], reverse=True)
-        print(rec_list)
-
-        news = []
-        for each in rec_list:
-            each_news = models.NewsData.objects.get(id=each[0])
-            news_dict = {'id':each_news.id, 'title':each_news.title, 'content':each_news.content,
-                         'front_image_url':each_news.front_image_url}
-            news.append(news_dict)
-
+            # 用列表来存放 按相似度排序后的 新闻数据[{}, {}, {}]
+            news = []
+            for each in rec_list:
+                each_news = models.NewsData.objects.get(id=each[0])
+                news_dict = {'id':each_news.id, 'title':each_news.title, 'content':each_news.content,
+                             'front_image_url':each_news.front_image_url}
+                news.append(news_dict)
+        else:
+            news = models.NewsData.objects.all().order_by('-id')[:20]  # 从数据库中取出所有数据，并按id降序排列
     else:
-        news = models.NewsData.objects.all().order_by('-id')[:10]  # 从数据库中取出所有数据，并按id降序排列
+        news = models.NewsData.objects.all().order_by('-id')[:20]  # 从数据库中取出所有数据，并按id降序排列
 
     return render(request, 'news_list.html', {'news':news, 'session':session})  # 跳转到主页面，并将news对象传递到前端
 
@@ -47,9 +49,10 @@ def NewsList(request):
 def NewsContent(request, n_id=1):
     session = request.session.get('username', default=None)
     news = models.NewsData.objects.get(id=n_id)
-    user = models.UserInfo.objects.get(username=session)
-    user.keyword = news.keyword
-    user.save()
+    if session != None:
+        user = models.UserInfo.objects.get(username=session)
+        user.keyword = news.keyword
+        user.save()
     return render(request, 'news_content.html', {'news':news})
 
 
